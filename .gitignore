@@ -17,3 +17,7 @@ docs/_build/
 __pycache__
 venv/
 .idea/
+
+pyodide/*.js
+pyodide/*.data
+pyodide/*.wasm

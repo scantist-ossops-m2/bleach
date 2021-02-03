@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bleach Pyodide Minimal Example</title>
+
+    <script>
+	window.languagePluginUrl = "./";
+    </script>
+    <script src="./pyodide.js"></script>
+</head>
+<body>
+<script>
+function init() {
+     languagePluginLoader.then(() => {
+	 console.log("loaded pyodide");
+	 return window.pyodide.loadPackage(['micropip', 'packaging', 'webencodings']);
+     }).then(() => {
+	 return window.pyodide.runPython(`
+ import micropip
+ micropip.install('https://files.pythonhosted.org/packages/f0/46/2bbd92086a4c6f051214cb48df6d9132b5f32c5e881d3f4991b16ec7e499/bleach-3.3.0-py2.py3-none-any.whl')
+ `)
+     }).then(() => {
+	 console.log("installed bleach")
+	 return window.pyodide.runPython(`
+ import bleach
+ print(bleach.__version__) # expect '3.3.0'
+ print(bleach.clean("<script><a>")) # expect '&lt;script&gt;<a></a>'
+ `);
+   });
+}
+init()
+ /* .then(() => { console.log("init completed") })
+  * .catch(e => { console.error("init error: " + e.message); });
+  */
+</script>
+
+</body>
+</html>
